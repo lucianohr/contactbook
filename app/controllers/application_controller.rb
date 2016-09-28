@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   require 'jasper_report'
 
-  def respond_to_report(name, filename, download = false, data, report_params = nil)
+  def respond_to_report(name, filename, data, download = false, report_params = nil)
     @report = JasperReport.new(name, data, report_params) 
     disposition = (download.nil? || download == false) ? 'inline' : 'attachment'
     send_data @report.to_pdf, filename: filename, type: 'application/pdf', disposition: disposition

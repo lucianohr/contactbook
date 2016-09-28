@@ -64,8 +64,8 @@ class ContactsController < ApplicationController
   end
 
   def report
-    data = Contact.all
-    respond_to_report('contacts', 'contacts.pdf', false, data)
+    data = Contact.all.map{|c| c.instance_values["attributes"]}
+    respond_to_report('contacts', 'contacts.pdf', data, false)
   end
 
   private

@@ -6,8 +6,8 @@ require 'java'
 
 java_import Java::net::sf::jasperreports::engine::JasperFillManager
 java_import Java::net::sf::jasperreports::engine::JasperExportManager
-java_import Java::net::sf::jasperreports::engine::JRMapCollectionDataSource
-# java_import Java::net::sf::jasperreports::engine::JREmptyDataSource;
+java_import Java::net::sf::jasperreports::engine::data::JRMapCollectionDataSource
+java_import Java::net::sf::jasperreports::engine::JREmptyDataSource;
 
 class JasperReport
   DIR = "#{Rails.root}/app/reports"
@@ -19,15 +19,24 @@ class JasperReport
   end
 
   def to_pdf
-    # stmt = @conn.create_statement
-    dataSource = JRMapCollectionDataSource.new()
+    if @dataset.present?
+      data = java.util.ArrayList.new
+      @dataset.each do |item|
+        mapItem = java.util.HashMap.new
+        item.each{|k,v| mapItem.put(k.to_s, v.to_s)}
+        data.add(mapItem)
+      end
+      dataSource = JRMapCollectionDataSource.new(data)
+    else
+      dataSource = JREmptyDataSource.new()
+    end
     report_source = "#{DIR}/#{@model}.jasper"
     raise ArgumentError, "#@model does not exist." unless File.exist?(report_source)
-
-    params = {CONTACT_NAME: 'fulado de tal'}
+    params = {CONTACT_NAME: 'fulado de tal', LOGO: 'https://www.scopi.com.br/css/img/topMenu2/planejamento-estrategico-scopi.png'}
     params.merge!(@report_params) if @report_params.present?
-
-    fill = JasperFillManager.fill_report(report_source, params, dataSource)
+    parameters = java.util.HashMap.new
+    params.each{|k,v| parameters.put(k.to_s, v.to_s)}
+    fill = JasperFillManager.fill_report(report_source, parameters, dataSource)
     pdf = JasperExportManager.export_report_to_pdf(fill)
 
     return pdf
