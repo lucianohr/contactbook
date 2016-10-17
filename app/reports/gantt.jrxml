@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="26cb838c-febc-4186-a3d0-58944dcc4c67">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="CONTACT_NAME" class="java.lang.String"/>
+	<parameter name="LOGO" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="prevision_start" class="java.lang.String"/>
+	<field name="prevision_end" class="java.lang.String"/>
+	<field name="date_start" class="java.lang.String"/>
+	<field name="date_end" class="java.lang.String"/>
+	<field name="subtasks" class="java.util.Collection"/>
+	<summary>
+		<band height="550">
+			<ganttChart>
+				<chart>
+					<reportElement x="0" y="0" width="802" height="550" uuid="2431fc6e-8f9a-4f5e-8d05-f8ca874ea172"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<ganttDataset>
+					<ganttSeries>
+						<seriesExpression><![CDATA["Previsto"]]></seriesExpression>
+						<taskExpression><![CDATA[$F{name}]]></taskExpression>
+						<subtaskExpression><![CDATA[$F{name}]]></subtaskExpression>
+						<startDateExpression><![CDATA[new SimpleDateFormat("yyyy-MM-dd").parse($F{prevision_start})]]></startDateExpression>
+						<endDateExpression><![CDATA[new SimpleDateFormat("yyyy-MM-dd").parse($F{prevision_end})]]></endDateExpression>
+					</ganttSeries>
+					<ganttSeries>
+						<seriesExpression><![CDATA["Executado"]]></seriesExpression>
+						<taskExpression><![CDATA[$F{name}]]></taskExpression>
+						<subtaskExpression><![CDATA[$F{name}]]></subtaskExpression>
+						<startDateExpression><![CDATA[new SimpleDateFormat("yyyy-MM-dd").parse($F{date_start})]]></startDateExpression>
+						<endDateExpression><![CDATA[new SimpleDateFormat("yyyy-MM-dd").parse($F{date_end})]]></endDateExpression>
+					</ganttSeries>
+				</ganttDataset>
+				<barPlot isShowLabels="true">
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</ganttChart>
+		</band>
+	</summary>
+</jasperReport>

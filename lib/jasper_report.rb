@@ -23,7 +23,20 @@ class JasperReport
       data = java.util.ArrayList.new
       @dataset.each do |item|
         mapItem = java.util.HashMap.new
-        item.each{|k,v| mapItem.put(k.to_s, v.to_s)}
+        
+        subtasks = java.util.ArrayList.new
+        item.each do |k,v|
+          if k == :subtasks
+            v.each do |sub_item|
+              subItem = java.util.HashMap.new
+              sub_item.each {|sub_k, sub_v| subItem.put(sub_k.to_s, sub_v.to_s)}
+              subtasks.add(subItem)
+            end
+            mapItem.put('subtasks', subtasks)
+          else
+            mapItem.put(k.to_s, v.to_s)
+          end
+        end
         data.add(mapItem)
       end
       dataSource = JRMapCollectionDataSource.new(data)

@@ -68,6 +68,42 @@ class ContactsController < ApplicationController
     respond_to_report('contacts', 'contacts.pdf', data, false)
   end
 
+  def gantt
+    data = (1..50).map do |idx|
+      {
+        name: "Task #{idx}", 
+        prevision_start: Date.today + idx.days, 
+        prevision_end: Date.today + 10.days + idx.days,
+        date_start: Date.today + idx.days, 
+        date_end: Date.today + 10.days + idx.days,
+        subtasks: [
+          {
+            name: "Subtask 1", 
+            prevision_start: Date.today + idx.days, 
+            prevision_end: Date.today + 10.days + idx.days,
+            date_start: Date.today + idx.days, 
+            date_end: Date.today + 10.days + idx.days
+          },
+          {
+            name: "Subtask 2", 
+            prevision_start: Date.today + idx.days, 
+            prevision_end: Date.today + 10.days + idx.days,
+            date_start: Date.today + idx.days, 
+            date_end: Date.today + 10.days + idx.days
+          },
+          {
+            name: "Subtask 3", 
+            prevision_start: Date.today + idx.days, 
+            prevision_end: Date.today + 10.days + idx.days,
+            date_start: Date.today + idx.days, 
+            date_end: Date.today + 10.days + idx.days
+          }
+        ]
+      }
+    end
+    respond_to_report('gantt', 'gantt.pdf', data, false)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contact
