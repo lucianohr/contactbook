@@ -69,37 +69,30 @@ class ContactsController < ApplicationController
   end
 
   def gantt
-    data = (1..50).map do |idx|
-      {
-        name: "Task #{idx}", 
-        prevision_start: Date.today + idx.days, 
-        prevision_end: Date.today + 10.days + idx.days,
-        date_start: Date.today + idx.days, 
-        date_end: Date.today + 10.days + idx.days,
-        subtasks: [
-          {
-            name: "Subtask 1", 
-            prevision_start: Date.today + idx.days, 
-            prevision_end: Date.today + 10.days + idx.days,
-            date_start: Date.today + idx.days, 
-            date_end: Date.today + 10.days + idx.days
-          },
-          {
-            name: "Subtask 2", 
-            prevision_start: Date.today + idx.days, 
-            prevision_end: Date.today + 10.days + idx.days,
-            date_start: Date.today + idx.days, 
-            date_end: Date.today + 10.days + idx.days
-          },
-          {
-            name: "Subtask 3", 
-            prevision_start: Date.today + idx.days, 
-            prevision_end: Date.today + 10.days + idx.days,
-            date_start: Date.today + idx.days, 
-            date_end: Date.today + 10.days + idx.days
+    data = []
+    (1..4).map do |idx_phase|
+      (1..15).map do |idx_task|
+        data << {
+          phase: "Phase #{idx_phase}",
+          task: "Task #{idx_task}",
+          subtask: "",
+          prevision_start: Date.today + 1.day, 
+          prevision_end: Date.today + 13.days,
+          date_start: Date.today + 1.day, 
+          date_end: Date.today + 13.days
+        }
+        (1..3).map do |idx_sub|
+          data << {
+            phase: "Phase #{idx_phase}",
+            task: "Task #{idx_task}",
+            subtask: "Subtask #{idx_sub}",
+            prevision_start: Date.today + idx_sub.days, 
+            prevision_end: Date.today + 10.days + idx_sub.days,
+            date_start: Date.today + idx_sub.days, 
+            date_end: Date.today + 10.days + idx_sub.days
           }
-        ]
-      }
+        end
+      end
     end
     respond_to_report('gantt', 'gantt.pdf', data, false)
   end
